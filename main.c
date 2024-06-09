@@ -11,7 +11,7 @@
     3. Allows for straightforward implementation of adding and removing
     4. Also displays commands without excessive complexity
 */
-#define MAX_HISTORY 10
+#define MAXIMUM_HISTORY 10
 //------------------------------------X------------------------------------------|
 /*
     1. Define a constant for the maximum length of a command
@@ -19,14 +19,14 @@
     3. Large enough for most commands
     4. Efficient for memory allocation and prevents buffer overflow
 */
-#define MAX_COMMAND_LENGTH 1024
+#define MAXIMUM_COMMAND_LENGTH 1024
 //------------------------------------X------------------------------------------|
 /*
     1. Declare an array to hold the history of commands
     2. Max history size is 10--> provides constant time access (efficient)
     3. Supports the implementation of hist and r n commands
 */
-char *history[MAX_HISTORY];
+char *history[MAXIMUM_HISTORY];
 // Initialize history count to zero(0)
 int history_count = 0;
 //------------------------------------X------------------------------------------|
@@ -37,14 +37,14 @@ void add_to_history(const char *command) {
         2. Only adds a new command given available space
         3. Maintains the history size of 10
     */
-    if (history_count < MAX_HISTORY) 
+    if (history_count < MAXIMUM_HISTORY) 
     {
         /*
-            1. Duplicate the command and add it to the history
-            2. strdup function allocates memory and creates a copy of the given command string
+            1. Duplicate the command and add it to history
+            2. strdup allocates memory and creates a copy of the given command string
             3. History array stores independent copies of each command
             4. Can't do pointers to the original strings
-            5. Because, they may be modified or deallocated somewhere else in the program
+            5. Because, they may be modified/deallocated somewhere else in the program
         */
         history[history_count++] = strdup(command);
     } 
@@ -56,15 +56,15 @@ void add_to_history(const char *command) {
         */
         free(history[0]);
         // Shift all commands in the history array to the left
-        for (int index = 1; index < MAX_HISTORY; index++) 
+        for (int index = 1; index < MAXIMUM_HISTORY; index++) 
         {
             history[index - 1] = history[index];
         }
         /*
-            1. Add the new command to the end of the history array
-            2. Ensures most recent command is stored at the end of the array
+            1. Add the new command to the end of the array
+            2. Ensure most recent command is stored at the end of the array
         */
-        history[MAX_HISTORY - 1] = strdup(command);
+        history[MAXIMUM_HISTORY - 1] = strdup(command);
     }
 }
 //------------------------------------X------------------------------------------|
@@ -72,7 +72,7 @@ void add_to_history(const char *command) {
 void print_history() {
     /*
         1. Loop through the history array 
-        2. And print each command with its index
+        2. And print commands with their indexes
     */
     for (int index = 0; index < history_count; index++) 
     {
@@ -83,7 +83,7 @@ void print_history() {
 // Function to execute commands
 void execute_command(char *command) {
     // Define an array to hold command arguments
-    char *argv[MAX_COMMAND_LENGTH];
+    char *argv[MAXIMUM_COMMAND_LENGTH];
     // Initialize argument count to zero(0)
     int argc      = 0;
     // Tokenize the command string using space as delimiter
@@ -99,19 +99,23 @@ void execute_command(char *command) {
     // Null terminate the arguments array
     argv[argc] = NULL;
 
-    // If no command entered, return
+    // If no command is entered, return
     if (argc == 0) return;
 
-    // Check if the command is exit
+    /*
+        1. Check if the command is exit
+        2. If yes, exit the shell
+    */
     if (strcmp(argv[0], "exit") == 0) 
     {
-        // If yes, exit the shell
         exit(0);
     } 
-    // Check is the command is hist
+    /*
+        1. Check if the command is hist
+        2. If yes, print the command hist
+    */
     else if (strcmp(argv[0], "hist") == 0) 
     {
-        // If yes, print the command history and return
         print_history();
         return;
     } 
@@ -174,7 +178,7 @@ void execute_command(char *command) {
         // Check if the child process exited with an error
         if (WIFEXITED(status) && WEXITSTATUS(status) != 0) 
         {
-            // Print the error code
+            // If yes, print the error code
             printf("The program exited with error: %d\n", WEXITSTATUS(status));
         }
     }
@@ -182,14 +186,14 @@ void execute_command(char *command) {
 //------------------------------------X------------------------------------------|
 int main() {
     // Declare a buffer to hold the command input
-    char command[MAX_COMMAND_LENGTH];
+    char command[MAXIMUM_COMMAND_LENGTH];
     // Infinite loop to continuously accept commands
     while (1) 
     {
         // Print the shell prompt
         printf("guish> ");
         // Read the command from standard input
-        if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL) 
+        if (fgets(command, MAXIMUM_COMMAND_LENGTH, stdin) == NULL) 
         {
             // Break the loop if end of input is reached
             break;
