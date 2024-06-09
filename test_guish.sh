@@ -22,7 +22,7 @@ run_test() {
 
 # Test cases
 run_test "echo Hello, World!" "Hello, World!"
-run_test "hist" "1 echo"
+run_test "hist" "1 echo Hello, World!"
 run_test "r 1" "echo Hello, World!\nHello, World!"
 run_test "r" "echo Hello, World!\nHello, World!"
 run_test "foobar" "The program seems missing. Error code is: [error code]"
