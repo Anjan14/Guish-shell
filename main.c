@@ -85,9 +85,9 @@ void execute_command(char *command) {
     // Define an array to hold command arguments
     char *argv[MAXIMUM_COMMAND_LENGTH];
     // Initialize argument count to zero(0)
-    int argc      = 0;
+    int argc    = 0;
     // Tokenize the command string using space as delimiter
-    char *token   = strtok(command, " ");
+    char *token = strtok(command, " ");
     //Loop through all tokens
     while (token != NULL) 
     {
